@@ -4,6 +4,10 @@
 
     for(let i = 0; i < 5; i++) {
         arrayToDisplay.push([]);
+
+        let breakLine = document.createElement('br');
+		app.appendChild(breakLine);
+
         for(let j = 0; j < 5; j++){
             arrayToDisplay[i].push(Math.random() < 0.7);
 
