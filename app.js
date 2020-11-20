@@ -12,12 +12,13 @@
             arrayToDisplay[i].push(Math.random() < 0.7);
 
             let button = document.createElement('button');
-			button.classList.add("cell", "white");
+			button.classList.add("cell");
 			app.appendChild(button);
 
             if (arrayToDisplay[i][j]) {
             	button.onclick = function() {
 					// call function() create normal;
+					button.classList.add("white");
 				}
             }
             else {
