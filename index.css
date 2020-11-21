@@ -1,17 +1,41 @@
 body {
 	
 }
-
-.white {
-	background-color: white !important;
+div.lineFlex {
+	display: flex;
 }
-
 .cell {
 	background-color: grey;
-	display: inline-block;
 	margin: 0;
 	padding: 0;
-	width: 20px;
-	height: 20px;
+	width: 30px;
+	height: 30px;
 	border: 1px solid #000;
 }
+div.discovered {
+	text-align: center;
+	vertical-align: middle;
+	background-color: white;
+	padding-bottom: -4px;
+	max-height: 30px;
+	font-weight: bold;
+}
+.s1 {
+	color: blue;
+}
+.s2 {
+	color: rebeccapurple;
+}
+.s3 {
+	color: red;
+}
+.s4 {
+	color: maroon;
+}
+.s5 {
+	color: lightcoral;
+}
+.s6 {
+	color: black;
+}
+
