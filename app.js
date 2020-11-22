@@ -32,7 +32,7 @@ const FLAG = "/!\\"
     play(x, y) {
       if (this.plan[x][y]) {
         this.plan[x][y] = this.getBombsArround(x, y, true).toString()
-        this.showNumberCallback(x, y, this.plan[(x, y)])
+        this.showNumberCallback(x, y, this.plan[x][y])
         return this.plan[x][y]
       } else return -1
     }
@@ -107,7 +107,7 @@ const FLAG = "/!\\"
       app.appendChild(breakLine)
 
       for (let y = 0; y < baseSize; y++) {
-        arrayToDisplay[x].push(Math.random() < 0.87)
+        arrayToDisplay[x].push(Math.random() < 0.9)
 
         let button = document.createElement("div")
         button.classList.add("cell")
@@ -119,15 +119,10 @@ const FLAG = "/!\\"
             updateTimer(0)
           }
           let playResult = window.Demineur.play(x, y)
-          if (playResult >= 0) {
-            button.textContent = playResult
-            button.classList.add("discovered")
-            button.classList.add("s" + playResult.toString())
-          } else {
+          if (playResult < 0) {
             isPartyStopped = true
             if (!alert("You lost !")) location.reload()
           }
-          // call function() create normal;
           button.classList.add("white")
         }
 
@@ -139,17 +134,35 @@ const FLAG = "/!\\"
       }
 
       //Setting up window.Demineur
-      window.Demineur.setPlan(arrayToDisplay)
-      window.Demineur.onNoBombCallBack = (x, y) => {
-        let button = document.getElementById(x + "and" + y)
-        button.classList.add("noBomb")
-      }
-      window.Demineur.showNumberCallback = (x, y, number) => {
+    }
+
+    function checkSuccess() {
+      let isSuccess = true
+      window.Demineur.plan.forEach((x) =>
+        x.forEach(
+          (y) =>
+            (isSuccess = isSuccess && (y === false || typeof y == "string"))
+        )
+      )
+      if (isSuccess && !alert("You won, wanna replay?")) location.reload()
+    }
+    window.Demineur.setPlan(arrayToDisplay)
+    window.Demineur.onNoBombCallBack = (x, y) => {
+      let button = document.getElementById(x + "and" + y)
+      button.classList.add("noBomb")
+      checkSuccess()
+    }
+
+    window.Demineur.showNumberCallback = (x, y, number) => {
+      if (number !== "0") {
         let button = document.getElementById(x + "and" + y)
         button.textContent = number.toString()
         button.classList.add("discovered")
+
+        checkSuccess()
       }
     }
   }
-  initGrille(15)
+
+  initGrille(12)
 })()
