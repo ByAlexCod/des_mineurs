@@ -114,7 +114,7 @@ const FLAG = "/!\\"
             button.classList.add("discovered")
             button.classList.add("s" + playResult.toString())
           } else {
-            alert("You lost !")
+            if(!alert("You lost !")) location.reload();
           }
           // call function() create normal;
           button.classList.add("white")
@@ -138,5 +138,5 @@ const FLAG = "/!\\"
       }
     }
   }
-  initGrille(3)
+  initGrille(15);
 })()
