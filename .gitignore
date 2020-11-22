@@ -1,2 +1,6 @@
 
 debug.log
+
+*.tgz
+
+node_modules
