@@ -85,7 +85,6 @@ const FLAG = "/!\\"
     }
   })()
 
-  let app = document.getElementById("app")
 
   let isPartyStopped = true
   function updateTimer(last_second) {
@@ -98,8 +97,35 @@ const FLAG = "/!\\"
       }
     }, 1000)
   }
-
+    const difficulties = [{
+        name:"easy",
+        size:5
+    },
+    {
+        name:"medium",
+        size:10
+    },
+    {
+        name:"hard",
+        size:15
+    }]
+    
   function initGrille(baseSize) {
+    let app = document.getElementById("app")
+    app.innerHTML = '';
+    // Adding difficulty
+    for(let difficulty of difficulties) {
+        console.log(difficulty)
+        let radio = document.createElement("input")
+        radio.id = "difficulty"+ difficulty.name
+        radio.setAttribute("type", "radio")
+        app.appendChild(radio)
+        radio.onclick = function () {
+            initGrille(difficulty.size);
+        }
+        if(baseSize === difficulty.size) document.getElementById("difficulty" + difficulty.name).checked = true;
+    }
+
     let arrayToDisplay = []
     for (let x = 0; x < baseSize; x++) {
       arrayToDisplay.push([])
@@ -166,5 +192,5 @@ const FLAG = "/!\\"
     }
   }
 
-  initGrille(12)
+  initGrille(5)
 })()
