@@ -59,13 +59,13 @@ const FLAG = "/!\\"
       })
 
       if (count == 0 && isFirst) {
-        this.porpagate(x, y, [])
+        this.propagate(x, y, [])
       }
 
       return count
     }
 
-    porpagate(x, y, noCbList) {
+    propagate(x, y, noCbList) {
       let that = this
       this.runThroughNeighboors(x, y, (rx, ry) => {
         if (
@@ -76,7 +76,7 @@ const FLAG = "/!\\"
           if (bombsArround == 0) {
             this.plan[rx][ry] = "0"
             this.onNoBombCallBack(rx, ry)
-            that.porpagate(rx, ry, noCbList)
+            that.propagate(rx, ry, noCbList)
           } else {
             this.plan[rx][ry] = bombsArround.toString()
             this.showNumberCallback(rx, ry, bombsArround)
@@ -128,12 +128,12 @@ const FLAG = "/!\\"
     let app = document.getElementById("app")
     app.innerHTML = '';
     
-  clearTimeout(timeOut);
-  updateTimer(0);
+    clearTimeout(timeOut);
+    updateTimer(0);
 
     // Adding difficulty
     for(let difficulty of difficulties) {
-        console.log(difficulty)
+
         let radio = document.createElement("input")
         radio.id = "difficulty"+ difficulty.name
         radio.setAttribute("type", "radio")
@@ -142,6 +142,7 @@ const FLAG = "/!\\"
             initGrille(difficulty.size);
         }
         if(baseSize === difficulty.size) document.getElementById("difficulty" + difficulty.name).checked = true;
+    
     }
 
     let arrayToDisplay = []
