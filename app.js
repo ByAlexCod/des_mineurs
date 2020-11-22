@@ -114,7 +114,7 @@ const FLAG = "/!\\"
             button.classList.add("discovered")
             button.classList.add("s" + playResult.toString())
           } else {
-            alert("You lost you fucking piece of shit")
+            alert("You lost !")
           }
           // call function() create normal;
           button.classList.add("white")
