@@ -28,6 +28,11 @@ div.discovered {
   	margin-left: 37.85vw;
 }
 
+#timer {
+	text-align: center;
+    margin: 10 0 10 0;
+}
+
 div::contains("a")
 .s1 {
 	color: blue;

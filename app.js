@@ -1,6 +1,17 @@
 const FLAG = "/!\\"
 
 ;(() => {
+
+  var para = document.createElement("p");
+  var node = document.createTextNode("0");
+  para.appendChild(node);
+
+  para.id = "timer";
+  
+  let timerSpan = document.createElement("span")
+  timerSpan.append(para);
+  document.body.prepend(timerSpan);
+	
   window.Demineur = new (class Demineur {
     //Array à deux dimensions
     plan = [[]]
@@ -85,7 +96,7 @@ const FLAG = "/!\\"
     }
   })()
 
-  let app = document.getElementById("app")
+  let app = document.getElementById("app");
 
   let isPartyStopped = true
   function updateTimer(last_second) {
