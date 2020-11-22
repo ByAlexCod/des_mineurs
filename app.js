@@ -2,6 +2,7 @@ const FLAG = "/!\\"
 
 ;(() => {
 
+  var timeOut;
   var para = document.createElement("p");
   var node = document.createTextNode("0");
   para.appendChild(node);
@@ -101,7 +102,7 @@ const FLAG = "/!\\"
   function updateTimer(last_second) {
   	let timer = document.getElementById("timer");
 
-    setTimeout(() => {
+    timeOut = setTimeout(() => {
       if (!isPartyStopped) {
         timer.innerHTML = last_second;
         updateTimer(last_second + 1)
@@ -127,7 +128,8 @@ const FLAG = "/!\\"
     let app = document.getElementById("app")
     app.innerHTML = '';
     
-  updateTimer(0)
+  clearTimeout(timeOut);
+  updateTimer(0);
 
     // Adding difficulty
     for(let difficulty of difficulties) {
@@ -160,6 +162,7 @@ const FLAG = "/!\\"
         button.onclick = function (_) {
           if (isPartyStopped) {
             isPartyStopped = false
+  			clearTimeout(timeOut);
             updateTimer(0)
           }
           let playResult = window.Demineur.play(x, y)
