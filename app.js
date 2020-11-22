@@ -87,7 +87,15 @@ const FLAG = "/!\\"
 
   let app = document.getElementById("app")
 
-  //TODO Should be in the Demineur Model
+  let isPartyStopped = true
+  function updateTimer(last_second) {
+    setTimeout(() => {
+      if (!isPartyStopped) {
+        //Update de l affichage last second
+        updateTimer(last_second + 1)
+      }
+    }, 1000)
+  }
 
   function initGrille(baseSize) {
     let arrayToDisplay = []
@@ -106,13 +114,18 @@ const FLAG = "/!\\"
         button.id = x + "and" + y
 
         button.onclick = function (_) {
+          if (isPartyStopped) {
+            isPartyStopped = false
+            updateTimer(0)
+          }
           let playResult = window.Demineur.play(x, y)
           if (playResult >= 0) {
             button.textContent = playResult
             button.classList.add("discovered")
             button.classList.add("s" + playResult.toString())
           } else {
-            if(!alert("You lost !")) location.reload();
+            isPartyStopped = true
+            if (!alert("You lost !")) location.reload()
           }
           // call function() create normal;
           button.classList.add("white")
@@ -138,5 +151,5 @@ const FLAG = "/!\\"
       }
     }
   }
-  initGrille(15);
+  initGrille(15)
 })()
