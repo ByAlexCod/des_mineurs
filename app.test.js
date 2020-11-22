@@ -10,8 +10,8 @@ let defaultPlan = [
 
 let propagationTestPlan = [
     [true, true, true],
-    [true, true, true],
-    [true, true, true]
+    [true, true, false],
+    [true, true, false]
 ]
 beforeEach(() => {
     require("./app");
@@ -40,7 +40,11 @@ test("Bomb exploded", () => {
 test("Propagation Test", () =>  {
     window.Demineur.setPlan(propagationTestPlan);
     expect(window.Demineur.play(0,0)).toBe("0")
-    expect(window.Demineur.plan).toEqual([["0","0","0"],["0","0","0"],["0","0","0"]])
+
+    expect(window.Demineur.plan).toEqual([
+        ["0","1", true],
+        ["0","2", false],
+        ["0","2", false]])
 })
 
 
