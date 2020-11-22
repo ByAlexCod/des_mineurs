@@ -4,6 +4,7 @@ const FLAG = "/!\\"
   window.Demineur = new (class Demineur {
     //Array à deux dimensions
     plan = [[]]
+    flags = {}
     onNoBombCallBack = (x, y) => {}
     showNumberCallback = (x, y, number) => {}
 
@@ -16,6 +17,16 @@ const FLAG = "/!\\"
 
     setPlan(arrTwoDimension) {
       this.plan = arrTwoDimension
+    }
+
+    toogleFlag(x, y) {
+      if (!this.flags[x]) this.flags[x] = {}
+      if (this.flags[x][y]) {
+        delete this.flags[x][y]
+        return undefined
+      }
+      this.flags[x][y] = true
+      return FLAG
     }
 
     play(x, y) {
@@ -77,19 +88,6 @@ const FLAG = "/!\\"
   let app = document.getElementById("app")
 
   //TODO Should be in the Demineur Model
-  function plantFlag(ev, cell, x, y, currentFlagState) {
-    //OnRightClick, plant Flag
-    ev.preventDefault()
-    currentFlagState = !currentFlagState
-    //checking that the cell hasn't been discovered
-    if (typeof window.Demineur.plan[x][y] != "string") {
-      if (currentFlagState) {
-        cell.textContent = FLAG
-      } else {
-        cell.textContent = undefined
-      }
-    }
-  }
 
   function initGrille(baseSize) {
     let arrayToDisplay = []
@@ -120,8 +118,10 @@ const FLAG = "/!\\"
           button.classList.add("white")
         }
 
-        let isFlag = false
-        button.oncontextmenu = (ev) => plantFlag(ev, button, x, y, isFlag)
+        button.oncontextmenu = (ev) => {
+          ev.preventDefault()
+          button.textContent = window.Demineur.toogleFlag(x, y)
+        }
         breakLine.appendChild(button)
       }
 

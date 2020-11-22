@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, afterEach } = require("@jest/globals");
-document.body.innerHTML = '<div id="app"></div>'
+document.body.innerHTML = '<div id="app"></div>';
 
 //Default bomb plan
 let defaultPlan = [
@@ -9,13 +9,13 @@ let defaultPlan = [
 ];
 
 let propagationTestPlan = [
-    [true, true, true],
-    [true, true, false],
-    [true, true, false]
-]
+  [true, true, true],
+  [true, true, false],
+  [true, true, false],
+];
 beforeEach(() => {
-    require("./app");
-})
+  require("./app");
+});
 
 test("Demineur global is not undefiend", () => {
   expect(window.Demineur).not.toBe(undefined);
@@ -24,30 +24,33 @@ test("Demineur plan set", () => {
   window.Demineur.setPlan(defaultPlan);
   expect(window.Demineur.plan).toBe(defaultPlan);
 });
-test("Bombs arround test", () => {
-    window.Demineur.setPlan(defaultPlan);
-    expect(window.Demineur.play(0,1)).toBe("2");
-    expect(window.Demineur.play(1,1)).toBe("4");
-    expect(window.Demineur.play(1,2)).toBe("2");
-});
 
-test("Bomb exploded", () => {
+describe("Bombs", () => {
+  test("Bombs arround test", () => {
     window.Demineur.setPlan(defaultPlan);
-    expect(window.Demineur.play(0,0)).toBe(-1);
-    expect(window.Demineur.play(2,2)).toBe(-1);
-});
+    expect(window.Demineur.play(0, 1)).toBe("2");
+    expect(window.Demineur.play(1, 1)).toBe("4");
+    expect(window.Demineur.play(1, 2)).toBe("2");
+  });
 
-test("Propagation Test", () =>  {
+  test("Bomb exploded", () => {
+    window.Demineur.setPlan(defaultPlan);
+    expect(window.Demineur.play(0, 0)).toBe(-1);
+    expect(window.Demineur.play(2, 2)).toBe(-1);
+  });
+});
+describe("Propagation", () => {
+  test("Propagation Test", () => {
     window.Demineur.setPlan(propagationTestPlan);
-    expect(window.Demineur.play(0,0)).toBe("0")
-
+    expect(window.Demineur.play(0, 0)).toBe("0");
     expect(window.Demineur.plan).toEqual([
-        ["0","1", true],
-        ["0","2", false],
-        ["0","2", false]])
-})
-
+      ["0", "1", true],
+      ["0", "2", false],
+      ["0", "2", false],
+    ]);
+  });
+});
 
 // test("Demineur discovered cell", () => {
-  
+
 // });
