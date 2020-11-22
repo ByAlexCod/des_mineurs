@@ -160,6 +160,7 @@ const FLAG = "/!\\"
         button.onclick = function (_) {
           if (isPartyStopped) {
             isPartyStopped = false
+            updateTimer(0)
           }
           let playResult = window.Demineur.play(x, y)
           if (playResult < 0) {
