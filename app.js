@@ -133,7 +133,11 @@ const FLAG = "/!\\"
 
     // Adding difficulty
     for(let difficulty of difficulties) {
-
+        let label = document.createElement("label")
+        let text = document.createTextNode(difficulty.name); 
+        label.appendChild(text);
+        app.appendChild(label);
+    
         let radio = document.createElement("input")
         radio.id = "difficulty"+ difficulty.name
         radio.setAttribute("type", "radio")
