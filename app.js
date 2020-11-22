@@ -1,12 +1,14 @@
 class Demineur {
   //Array à deux dimensions
   plan = [[]];
+  onNoBombCallBack = (x, y) => {};
+  showNumberCallback = (x, y, number) => {};
 
   constructor() {
-      this.setPlan = this.setPlan.bind(this)
-      this.play = this.play.bind(this)
-      this.getBombsArround = this.getBombsArround.bind(this)
-      this.runThroughNeighboors = this.runThroughNeighboors.bind(this)
+    this.setPlan = this.setPlan.bind(this);
+    this.play = this.play.bind(this);
+    this.getBombsArround = this.getBombsArround.bind(this);
+    this.runThroughNeighboors = this.runThroughNeighboors.bind(this);
   }
 
   setPlan(arrTwoDimension) {
@@ -15,23 +17,46 @@ class Demineur {
 
   play(x, y) {
     if (this.plan[x][y]) {
-      this.plan[x][y] = this.getBombsArround(x, y).toString();
+      this.plan[x][y] = this.getBombsArround(x, y, true).toString();
+      this.showNumberCallback(x, y, this.plan[(x, y)]);
       return this.plan[x][y];
     } else return -1;
   }
 
-  getBombsArround(x, y) {
+  getBombsArround(x, y, isFirst) {
     let count = 0;
+
     this.runThroughNeighboors(x, y, (rx, ry) => {
-      console.log(x + " " + y, this.plan[rx][ry]);
-      if (!this.plan[rx][ry] && typeof this.plan[rx, ry] !== "number") count++;
+      if (!this.plan[rx][ry]) {
+        if (typeof this.plan[(rx, ry)] !== "number") count++;
+      }
     });
+
+    if (count == 0 && isFirst) {
+      this.porpagate(x, y, []);
+    }
+
     return count;
   }
 
-  runThroughNeighboors(x, y, cb) {
-    console.log(this.plan);
+  porpagate(x, y, noCbList) {
+    let that = this;
+    this.runThroughNeighboors(x, y, (rx, ry) => {
+      if (noCbList.find((l) => l == JSON.stringify({ rx, ry })) == undefined) {
+        console.log(JSON.stringify({ rx, ry }));
+        noCbList.push(JSON.stringify({ rx, ry }));
+        let bombsArround = that.getBombsArround(rx, ry, false);
+        if (bombsArround == 0) {
+          this.onNoBombCallBack(rx, ry);
+          that.porpagate(rx, ry, noCbList);
+        } else {
+          this.showNumberCallback(rx, ry, bombsArround);
+        }
+      }
+    });
+  }
 
+  runThroughNeighboors(x, y, cb) {
     for (let currentX = x - 1; currentX <= x + 1; currentX++) {
       if (currentX < 0 || currentX >= this.plan.length) continue;
       for (let currentY = y - 1; currentY <= y + 1; currentY++) {
@@ -44,48 +69,70 @@ class Demineur {
 }
 
 (() => {
+  let demineur;
   let app = document.getElementById("app");
 
-  function initGrille(size) {
+  function plantFlag(ev, cell, x, y, currentFlagState) {
+    //OnRightClick, plant Flag
+    ev.preventDefault();    
+    currentFlagState = !currentFlagState;
+    //checking that the cell hasn't been discovered
+    if (typeof demineur.plan[x][y] != "string") {
+      if (currentFlagState) {
+        cell.textContent = "/!\\";
+      } else {
+        cell.textContent = undefined;
+      }
+    }
+  }
+
+  function initGrille(baseSize) {
     let arrayToDisplay = [];
 
-    let demineur = new Demineur();
+    demineur = new Demineur();
 
-    let baseSize = size;
-
-    for (let i = 0; i < baseSize; i++) {
+    for (let x = 0; x < baseSize; x++) {
       arrayToDisplay.push([]);
 
       let breakLine = document.createElement("div");
-      breakLine.classList.add("lineFlex")
+      breakLine.classList.add("lineFlex");
       app.appendChild(breakLine);
 
-      for (let j = 0; j < baseSize; j++) {
-        arrayToDisplay[i].push(Math.random() < 0.80);
+      for (let y = 0; y < baseSize; y++) {
+        arrayToDisplay[x].push(Math.random() < 0.87);
 
         let button = document.createElement("div");
         button.classList.add("cell");
+        button.id = x + "and" + y;
 
         button.onclick = function (_) {
-          let playResult = demineur.play(i, j);
+          let playResult = demineur.play(x, y);
           if (playResult >= 0) {
             button.textContent = playResult;
             button.classList.add("discovered");
-            button.classList.add("s"+playResult.toString())
+            button.classList.add("s" + playResult.toString());
           } else {
-            alert("You lost you fucking piece of shit")
+            alert("You lost you fucking piece of shit");
           }
           // call function() create normal;
           button.classList.add("white");
         };
-        breakLine.appendChild(button)
+        let isFlag = false;
+        button.oncontextmenu = (ev) => plantFlag(ev, button, x, y, isFlag);
+        breakLine.appendChild(button);
       }
 
       demineur.setPlan(arrayToDisplay);
+      demineur.onNoBombCallBack = (x, y) => {
+        let button = document.getElementById(x + "and" + y);
+        button.classList.add("noBomb");
+      };
+      demineur.showNumberCallback = (x, y, number) => {
+        let button = document.getElementById(x + "and" + y);
+        button.textContent = number.toString();
+        button.classList.add("discovered");
+      };
     }
-
-
   }
-  initGrille(12)
-
+  initGrille(30);
 })();

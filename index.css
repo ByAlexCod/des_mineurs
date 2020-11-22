@@ -11,15 +11,19 @@ div.lineFlex {
 	width: 30px;
 	height: 30px;
 	border: 1px solid #000;
-}
-div.discovered {
 	text-align: center;
 	vertical-align: middle;
+}
+.noBomb {
+	background-color: aliceblue;
+}
+div.discovered {
+	
 	background-color: white;
-	padding-bottom: -4px;
-	max-height: 30px;
 	font-weight: bold;
 }
+
+div::contains("a")
 .s1 {
 	color: blue;
 }
