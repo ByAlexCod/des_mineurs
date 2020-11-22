@@ -89,9 +89,11 @@ const FLAG = "/!\\"
 
   let isPartyStopped = true
   function updateTimer(last_second) {
+  	let timer = document.getElementById("timer");
+
     setTimeout(() => {
       if (!isPartyStopped) {
-        //Update de l affichage last second
+        timer.innerHTML = last_second;
         updateTimer(last_second + 1)
       }
     }, 1000)

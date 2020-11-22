@@ -23,6 +23,11 @@ div.discovered {
 	font-weight: bold;
 }
 
+#app {
+	width: 50%;
+  	margin-left: 37.85vw;
+}
+
 div::contains("a")
 .s1 {
 	color: blue;
